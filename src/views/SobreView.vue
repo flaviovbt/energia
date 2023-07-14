@@ -1,7 +1,7 @@
 <template>
-  <main class="home">
+  <main class="Sobre">
     <NavbarComponent/>
-    <h1>Home</h1>
+    <h1>Sobre</h1>
   </main>
 </template>
 
