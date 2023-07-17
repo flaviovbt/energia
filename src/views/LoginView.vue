@@ -2,7 +2,7 @@
 	<main class="login">
 		<section class="forms">
 
-			<form class="register" @submit.prevent="register">
+			<form class="register" @submit.prevent="register" v-if="isCadastro">
 				<h2>Register</h2>
 				<input 
 					type="email" 
@@ -17,7 +17,7 @@
 					value="Register" />
 			</form>
 
-			<form class="login" @submit.prevent="login">
+			<form class="login" @submit.prevent="login" v-if="isLogin">
 				<h2>Login</h2>
 				<input 
 					type="email" 
@@ -41,6 +41,12 @@ import { ref } from 'vue'
 import { useStore } from 'vuex'
 
 export default {
+	data ( ){
+		return{
+			isLogin: true,
+			isCadastro: false
+		}
+	},
 	setup () {
 		const login_form = ref({});
 		const register_form = ref({});
@@ -64,7 +70,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .forms {
 	display: flex;
 	min-height: 100vh;

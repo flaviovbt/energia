@@ -1,5 +1,5 @@
 <template>
-    <nav id="navbar" v-if="$store.state.user">
+    <nav id="navbar">
       <div class="esquerda">
         <router-link class="item" v-bind:class="{ ativo: isAtivo1 }" to="/">Início</router-link>
         <router-link class="item" v-bind:class="{ ativo: isAtivo2 }" to="/">Jogo</router-link>
@@ -8,22 +8,18 @@
         <router-link class="item" v-bind:class="{ ativo: isAtivo5 }" to="/sobre">Sobre</router-link>
       </div>
 
-      <div class="direita">
-        <a class="item login"  v-bind:class="{ ativo: isAtivo5 }" @click="$store.dispatch('logout')">Logout</a>
+      <div class="right">
+        <router-link class="item login" v-bind:class="{ ativo: isAtivo6 }" to="/login" v-if="!isLogado">Login</router-link>
+        <a class="item login" @click="$store.dispatch('logout')" v-if="isLogado">Logout</a>
       </div>
     </nav>
     <router-view/>
 </template>
 
-<style>
-  * {
-    margin: 0;
-    padding: 0;
-  }
-
+<style scoped>
   #navbar{
       background-color: #77AD78;
-      height: 2.5em;
+      height: 7vh;
       display: flex;
       justify-content: space-between;
   }
@@ -31,23 +27,23 @@
   .item{
     color: #FFFFFF;
     text-decoration: none;
-    margin-right: 2em;
+    margin-right: 2vw;
     font-size: 1.1rem;
   }
 
-  .direita, .esquerda{
+  .right, .esquerda{
     display: flex;
     flex-direction: row;
     align-items: center;
   }
 
   .login{
-      margin: 0 4em 0 1em;
+      margin: 0 5vw 0 1vw;
       cursor: pointer;
   }
 
   .esquerda{
-    margin-left: 3em;
+    margin-left: 5vw;
   }
 
   .ativo{
@@ -56,9 +52,6 @@
 </style>
 
 <script>
-  import { onBeforeMount } from 'vue'
-  import { useStore } from 'vuex'
-
   export default{
       name: 'NavbarComponent',
       data(){
@@ -69,15 +62,9 @@
               isAtivo3: false,
               isAtivo4: false,
               isAtivo5: false,
-              isAtivo6: false
+              isAtivo6: false,
+              isLogado: false
           }
-      },
-      setup() {
-        const store = useStore()
-
-        onBeforeMount(() => {
-          store.dispatch('fetchUser')
-        })
       }
-}
+  }
 </script>
