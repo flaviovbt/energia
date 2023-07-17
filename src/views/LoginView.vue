@@ -1,7 +1,8 @@
 <template>
 	<main class="login">
-		<section class="forms">
+		<NavbarComponent ativo='6'/>
 
+		<section class="forms">
 			<form class="register" @submit.prevent="register" v-if="isCadastro">
 				<h2>Register</h2>
 				<input 
@@ -16,6 +17,7 @@
 					type="submit" 
 					value="Register" />
 			</form>
+			<p v-if="isCadastro" v-on:click="telaLogin()">login</p>
 
 			<form class="login" @submit.prevent="login" v-if="isLogin">
 				<h2>Login</h2>
@@ -31,16 +33,24 @@
 					type="submit" 
 					value="Login" />
 			</form>
-
+			<p v-if="isLogin" v-on:click="telaCadastro()">cadastro</p>
 		</section>
+
+		<FooterComponent/>
 	</main>
 </template>
 
 <script>
 import { ref } from 'vue'
 import { useStore } from 'vuex'
+import NavbarComponent from '@/components/NavbarComponent.vue';
+import FooterComponent from '@/components/FooterComponent.vue';
 
 export default {
+	components: {
+      NavbarComponent,
+      FooterComponent
+    },
 	data ( ){
 		return{
 			isLogin: true,
@@ -66,6 +76,17 @@ export default {
 			login,
 			register
 		}
+	},
+	methods:{
+		telaCadastro(){
+			this.isCadastro=true;
+			this.isLogin=false;
+		},
+
+		telaLogin(){
+			this.isLogin=true;
+			this.isCadastro=false;
+		}
 	}
 }
 </script>
@@ -73,7 +94,7 @@ export default {
 <style scoped>
 .forms {
 	display: flex;
-	min-height: 100vh;
+	height: 86vh;
 }
 
 form {
@@ -153,5 +174,9 @@ form.register input[type="submit"] {
 	border-radius: 0.5rem;
 	cursor: pointer;
 	text-transform: uppercase;
+}
+
+p{
+	color: #000;
 }
 </style>

@@ -1,6 +1,6 @@
 <template>
   <main class="Sobre">
-    <NavbarComponent/>
+    <NavbarComponent ativo='5'/>
     
     <div class="imgFundo">
       <h1>Este site é um projeto de TCC <br>

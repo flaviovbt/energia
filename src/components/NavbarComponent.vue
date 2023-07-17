@@ -10,7 +10,7 @@
 
       <div class="right">
         <router-link class="item login" v-bind:class="{ ativo: isAtivo6 }" to="/login" v-if="!isLogado">Login</router-link>
-        <a class="item login" @click="$store.dispatch('logout')" v-if="isLogado">Logout</a>
+        <a class="item login" @click="$store.dispatch('logout')" >Logout</a>
       </div>
     </nav>
     <router-view/>
@@ -52,7 +52,9 @@
 </style>
 
 <script>
+
   export default{
+      props: ['ativo'],
       name: 'NavbarComponent',
       data(){
           return{
@@ -65,6 +67,58 @@
               isAtivo6: false,
               isLogado: false
           }
+      },
+      methods:{
+        seleciona(){
+          switch (this.ativo) {
+            case '1':
+              this.isAtivo1 = true;
+              break;
+
+            case '2':
+              this.isAtivo2 = true;
+              this.isAtivo1 = false;
+              break;
+
+            case '3':
+              this.isAtivo3 = true;
+              this.isAtivo1 = false;
+              break;
+
+            case '4':
+              this.isAtivo4 = true;
+              this.isAtivo1 = false;
+              break;
+
+            case '5':
+              this.isAtivo5 = true;
+              this.isAtivo1 = false;
+              break;
+
+            case '6':
+              this.isAtivo6 = true;
+              this.isAtivo1 = false;
+              break;
+          }
+        },
+
+        mudaLogadoT(){
+          this.isLogado = true;
+        },
+
+        mudaLogadoF(){
+          this.isLogado = false;
+        }
+      },
+      mounted() {
+        if (this.ativo != null) {
+          this.seleciona();
+        }
+        /*if(this.login){
+          this.mudaLogadoT();
+        }else{
+          this.mudaLogadoF();
+        }*/
       }
   }
 </script>

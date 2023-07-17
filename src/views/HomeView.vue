@@ -1,6 +1,6 @@
 <template>
   <main class="home">
-    <NavbarComponent/>
+    <NavbarComponent ativo='1'/>
 
     <div class="imgFundo">
       <div class="esquerda">
@@ -23,12 +23,12 @@
         <div class="direita">
 
         <div class="b1">
-          <button><p>Comece A Jogar Agora</p></button>
+          <button class="botao"><p>Comece A Jogar Agora</p></button>
           <p class="info">*É necessário efetuar o login antes de Jogar</p>
         </div>
 
-        <div class="b">
-          <button><p>Ranking Da Energia Limpa</p></button>
+        <div class="b2">
+          <button class="botao"><p>Ranking Da Energia Limpa</p></button>
         </div>
         </div>
     </div>
@@ -38,9 +38,6 @@
 </template>
 
 <style>
-  p{
-    margin: 0;
-  }
   .imgFundo{
     display: flex;
     justify-content: space-evenly;
@@ -56,7 +53,7 @@
     color: white;
   }
 
-  button{
+  .botao{
     background-color: #77AD78;
     color: white;
     height: 8vh;
@@ -70,6 +67,7 @@
 
   button p{
     font-size: 2.8vh;
+    margin: 0;
   }
 
   .info{
