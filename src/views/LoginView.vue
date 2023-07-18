@@ -6,6 +6,10 @@
 			<form class="register" @submit.prevent="register" v-if="isCadastro">
 				<h2>Register</h2>
 				<input 
+					type="nome" 
+					placeholder="Nome"
+					v-model="register_form.nome" />
+				<input 
 					type="email" 
 					placeholder="Email address"
 					v-model="register_form.email" />

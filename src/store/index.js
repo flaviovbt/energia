@@ -4,12 +4,20 @@ import { auth } from '../firebase'
 import { 
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
-  signOut 
+  signOut,
+  updateProfile
 } from 'firebase/auth'
 
 export default createStore({
   state: {
-    user: null
+    user: {
+      providerData: null
+    }
+  },
+  getters: {
+    user(state){
+      return state.user
+    }
   },
   mutations: {
 
@@ -49,10 +57,11 @@ export default createStore({
     },
 
     async register ({ commit}, details) {
-       const { email, password } = details
+       const { email, password, nome } = details
 
       try {
-        await createUserWithEmailAndPassword(auth, email, password)
+        const response = await createUserWithEmailAndPassword(auth, email, password);
+        updateProfile(response.user, {displayName: nome});
       } catch (error) {
         switch(error.code) {
           case 'auth/email-already-in-use':
@@ -68,6 +77,7 @@ export default createStore({
             alert("Weak password")
             break
           default:
+            console.log(error);
             alert("Something went wrong")
         }
 

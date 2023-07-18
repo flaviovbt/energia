@@ -10,7 +10,7 @@
 
       <div class="right">
         <router-link class="item login" v-bind:class="{ ativo: isAtivo6 }" to="/login" v-if="!isLogado">Login</router-link>
-        <a class="item login" @click="$store.dispatch('logout')" >Logout</a>
+        <a class="item login" @click="$store.dispatch('logout')" v-on:click="logout()">Logout</a>
       </div>
     </nav>
     <router-view/>
@@ -52,6 +52,9 @@
 </style>
 
 <script>
+  import { useStore} from "vuex";
+  import {computed} from "vue";
+  import { auth } from '../firebase';
 
   export default{
       props: ['ativo'],
@@ -102,6 +105,10 @@
           }
         },
 
+        logout(){
+          alert("Você foi deslogado(a).")
+        },
+
         mudaLogadoT(){
           this.isLogado = true;
         },
@@ -109,6 +116,20 @@
         mudaLogadoF(){
           this.isLogado = false;
         }
+      },
+      setup() {
+
+        const store = useStore()
+
+        auth.onAuthStateChanged(user => {
+          store.dispatch("fetchUser", user);
+        });
+
+        const user = computed(() => {
+          return store.getters.user;
+        });
+
+        return {user}
       },
       mounted() {
         if (this.ativo != null) {
@@ -119,6 +140,12 @@
         }else{
           this.mudaLogadoF();
         }*/
+
+        try {
+          console.log(this.user);
+        } catch (error) {
+          console.log('fodasse')
+        }
       }
   }
 </script>
