@@ -2,42 +2,58 @@
 	<main class="login">
 		<NavbarComponent ativo='6'/>
 
-		<section class="forms">
-			<form class="register" @submit.prevent="register" v-if="isCadastro">
-				<h2>Register</h2>
-				<input 
-					type="nome" 
-					placeholder="Nome"
-					v-model="register_form.nome" />
-				<input 
-					type="email" 
-					placeholder="Email address"
-					v-model="register_form.email" />
-				<input 
-					type="password" 
-					placeholder="Password" 
-					v-model="register_form.password" />
-				<input 
-					type="submit" 
-					value="Register" />
-			</form>
-			<p v-if="isCadastro" v-on:click="telaLogin()">login</p>
+		<section class="imgFundo" >
+			<div class="boxMarrom" v-if="isCadastro">
+				<form class="register" @submit.prevent="checkRegister" >
+					<h2 class="title">Cadastrar</h2>
+					<input 
+						type="nome" 
+						placeholder="Nome"
+						required='true'
+						v-model="register_form.nome" />
+					<input 
+						type="email" 
+						placeholder="Email"
+						required="true"
+						v-model="register_form.email" />
+					<input 
+						type="password" 
+						placeholder="Senha" 
+						required="true"
+						v-model="register_form.password" />
+					<input 
+						type="password" 
+						required="true"
+						placeholder="Confirme sua senha" 
+						v-model="cSenha" />
+					<input 
+						type="submit" 
+						value="Crie sua conta" />
+				</form>
+				<div class="flex">
+					<p>Já possui uma conta ? </p><p v-on:click="telaLogin()" class="verde"> Faça login aqui</p>
+				</div>
+			</div>
 
-			<form class="login" @submit.prevent="login" v-if="isLogin">
-				<h2>Login</h2>
-				<input 
-					type="email" 
-					placeholder="Email address"
-					v-model="login_form.email" />
-				<input 
-					type="password" 
-					placeholder="Password" 
-					v-model="login_form.password" />
-				<input 
-					type="submit" 
-					value="Login" />
-			</form>
-			<p v-if="isLogin" v-on:click="telaCadastro()">cadastro</p>
+			<div class="boxMarrom" v-if="isLogin">
+				<form class="login" @submit.prevent="login" >
+					<h2 class="title">Entrar</h2>
+					<input 
+						type="email" 
+						placeholder="Email"
+						v-model="login_form.email" />
+					<input 
+						type="password" 
+						placeholder="Senha" 
+						v-model="login_form.password" />
+					<input 
+						type="submit" 
+						value="Log in" />
+				</form>
+				<div class="flex">
+					<p>Não possui uma conta ? </p><p v-on:click="telaCadastro()" class="verde"> Crie sua conta agora</p>
+				</div>
+			</div>
 		</section>
 
 		<FooterComponent/>
@@ -58,7 +74,8 @@ export default {
 	data ( ){
 		return{
 			isLogin: true,
-			isCadastro: false
+			isCadastro: false, 
+			cSenha: null
 		}
 	},
 	setup () {
@@ -90,36 +107,50 @@ export default {
 		telaLogin(){
 			this.isLogin=true;
 			this.isCadastro=false;
+		},
+
+		checkRegister(){
+			if(this.cSenha == this.register_form.password){
+				this.register();
+				return;
+			}
+
+			alert("Senhas não coincidem")
 		}
 	}
 }
 </script>
 
 <style scoped>
-.forms {
+
+.boxMarrom{
+	background-color: #A76F4B;
 	display: flex;
-	height: 86vh;
+	flex-direction: column;
+	align-items: center;
+	justify-content: space-evenly;
+	height: 70vh;
+	width: 30vw;
+	border-radius: 2vh;
+	color: white;
 }
 
-form {
-	flex: 1 1 0%;
-	padding: 8rem 1rem 1rem;
+.title{
+	text-align: center;
+	margin: 4vh 0;
 }
 
-form.register {
-	color: #FFF;
-	background-color: rgb(245, 66, 101);
-	background-image: linear-gradient(
-		to bottom right,
-		rgb(245, 66, 101) 0%,
-		rgb(189, 28, 60) 100%
-	);
+.flex{
+	display: flex;
 }
 
-h2 {
-	font-size: 2rem;
-	text-transform: uppercase;
-	margin-bottom: 2rem;
+.flex p {
+	margin-right: 0.2vw;
+}
+
+.verde{
+	color: #8FD694;
+	cursor: pointer;
 }
 
 input {
@@ -127,60 +158,40 @@ input {
 	border: none;
 	outline: none;
 	background: none;
+	border-radius: 0.5rem;
 
 	display: block;
-	width: 100%;
+	width: 20vw;
 	max-width: 400px;
-	margin: 0 auto;
 	font-size: 1.5rem;
 	margin-bottom: 2rem;
-	padding: 0.5rem 0rem;
+	padding: 0.5rem 0.5rem;
+	font-size: 2vh;
+	color: #FFF;
+	background-color: #DEA05F;
 }
 
-input:not([type="submit"]) {
-	opacity: 0.8;
-	transition: 0.4s;
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus, 
+input:-webkit-autofill:active{
+    -webkit-box-shadow: 0 0 0 30px #DEA05F inset !important;
 }
 
-input:focus:not([type="submit"]) {
-	opacity: 1;
+input:-webkit-autofill{
+    -webkit-text-fill-color: white !important;
 }
 
 input::placeholder {
 	color: inherit;
 }
 
-form.register input:not([type="submit"]) {
-	color: #FFF;
-	border-bottom: 2px solid #FFF;
-}
-
-form.login input:not([type="submit"]) {
-	color: #2c3e50;
-	border-bottom: 2px solid #2c3e50;
-}
-
-form.login input[type="submit"] {
-	background-color: rgb(245, 66, 101);
+form input[type="submit"] {
+	background-color: #77AD78;
 	color: #FFF;
 	font-weight: 700;
-	padding: 1rem 2rem;
-	border-radius: 0.5rem;
 	cursor: pointer;
 	text-transform: uppercase;
-}
-
-form.register input[type="submit"] {
-	background-color: #FFF;
-	color: rgb(245, 66, 101);
-	font-weight: 700;
-	padding: 1rem 2rem;
-	border-radius: 0.5rem;
-	cursor: pointer;
-	text-transform: uppercase;
-}
-
-p{
-	color: #000;
+	width: 100%;
 }
 </style>

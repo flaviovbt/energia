@@ -11,5 +11,6 @@
     font-family: 'Londrina Solid', cursive;
     margin: 0;
     padding: 0;
+    letter-spacing: 0.05rem;
   }
 </style>

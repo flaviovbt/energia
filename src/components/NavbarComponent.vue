@@ -10,7 +10,7 @@
 
       <div class="right">
         <router-link class="item login" v-bind:class="{ ativo: isAtivo6 }" to="/login" v-if="!isLogado">Login</router-link>
-        <a class="item login" @click="$store.dispatch('logout')" v-on:click="logout()">Logout</a>
+        <a class="item login" @click="$store.dispatch('logout')" v-on:click="logout()" v-if="isLogado">Logout</a>
       </div>
     </nav>
     <router-view/>
@@ -61,7 +61,6 @@
       name: 'NavbarComponent',
       data(){
           return{
-              session: "Login",
               isAtivo1: true,
               isAtivo2: false,
               isAtivo3: false,
@@ -106,7 +105,8 @@
         },
 
         logout(){
-          alert("Você foi deslogado(a).")
+          alert("Você foi deslogado(a).");
+          this.mudaLogadoF();
         },
 
         mudaLogadoT(){
@@ -135,17 +135,17 @@
         if (this.ativo != null) {
           this.seleciona();
         }
-        /*if(this.login){
-          this.mudaLogadoT();
-        }else{
-          this.mudaLogadoF();
-        }*/
-
+        
         try {
-          console.log(this.user);
-        } catch (error) {
-          console.log('fodasse')
+          if(this.user.displayName != null){
+            this.mudaLogadoT();
+          }else{
+            this.mudaLogadoF();
+          }
+        }catch(Ex){
+          this.mudaLogadoF();
         }
+        
       }
   }
 </script>

@@ -5,7 +5,7 @@
     <div class="imgFundo">
       <div class="esquerda">
 
-        <h1>Bem vindo(a) ao melhor jogo de <br>
+        <h1>Bem vindo(a) {{ nome }}ao melhor jogo de <br>
         perguntas e respostas sobre Energia <br>
         Sustentável e  Meio Ambiente. Desafie <br>
         seus amigos, teste seus conhecimentos, <br>
@@ -93,11 +93,42 @@
 <script>
   import NavbarComponent from '@/components/NavbarComponent.vue';
   import FooterComponent from '@/components/FooterComponent.vue';
+  import { useStore} from "vuex";
+  import {computed} from "vue";
+  import { auth } from '../firebase';
 
   export default {
     components: {
       NavbarComponent,
       FooterComponent
+    },
+    data ( ) {
+		  return {
+			  nome: ''
+		  }
+	  },
+    setup() {
+
+      const store = useStore()
+
+      auth.onAuthStateChanged(user => {
+        store.dispatch("fetchUser", user);
+      });
+
+      const user = computed(() => {
+        return store.getters.user;
+      });
+
+      return {user}
+    },
+    mounted(){
+      try {
+        if(this.user.displayName != null){
+          this.nome = this.user.displayName + ' ';
+        }
+      } catch (error) {
+      }
+      
     }
   }
 </script>
