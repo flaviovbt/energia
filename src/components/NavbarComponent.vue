@@ -9,6 +9,7 @@
       </div>
 
       <div class="right">
+        <p class="ola" v-if="isLogado">Olá&nbsp;&nbsp;<span class="ativo">{{ user.displayName }}</span>&nbsp;&nbsp;|&nbsp;&nbsp;</p>
         <router-link class="item login" v-bind:class="{ ativo: isAtivo6 }" to="/login" v-if="!isLogado">Login</router-link>
         <a class="item login" @click="$store.dispatch('logout')" v-on:click="logout()" v-if="isLogado">Logout</a>
       </div>
@@ -30,6 +31,11 @@
     margin-right: 2vw;
     font-size: 1.1rem;
   }
+  .ola{
+    color: #FFFFFF;
+    text-decoration: none;
+    font-size: 1.1rem;
+  }
 
   .right, .esquerda{
     display: flex;
@@ -38,7 +44,7 @@
   }
 
   .login{
-      margin: 0 5vw 0 1vw;
+      margin: 0 5vw 0 0;
       cursor: pointer;
   }
 
@@ -48,6 +54,10 @@
 
   .ativo{
     color: #9B6713;
+  }
+
+  .flex{
+    display: flex;
   }
 </style>
 

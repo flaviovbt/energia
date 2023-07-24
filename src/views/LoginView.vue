@@ -41,10 +41,12 @@
 					<input 
 						type="email" 
 						placeholder="Email"
+						required="true"
 						v-model="login_form.email" />
 					<input 
 						type="password" 
 						placeholder="Senha" 
+						required="true"
 						v-model="login_form.password" />
 					<input 
 						type="submit" 
