@@ -141,14 +141,15 @@
 
         return {user}
       },
-      mounted() {
+      async mounted() {
         if (this.ativo != null) {
           this.seleciona();
         }
         
         try {
-          if(this.user.displayName != null){
+          if(await this.user.displayName != null){
             this.mudaLogadoT();
+            console.log(this.user);
           }else{
             this.mudaLogadoF();
           }

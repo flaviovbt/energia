@@ -67,7 +67,8 @@ import { ref } from 'vue'
 import { useStore } from 'vuex'
 import NavbarComponent from '@/components/NavbarComponent.vue';
 import FooterComponent from '@/components/FooterComponent.vue';
-
+import { setUser } from '@/service/LoginView.service.js';
+ 
 export default {
 	components: {
       NavbarComponent,
@@ -111,13 +112,38 @@ export default {
 			this.isCadastro=false;
 		},
 
+		limpaForms(){
+			this.register_form.email = '';
+			this.register_form.nome = '';
+			this.register_form.password = '';
+			this.cSenha = '';
+		},
+
+		async salvaUsuario(){
+			await setUser(this.register_form.email, this.register_form.nome)
+				.then((response) => {
+				console.log(response);
+				this.limpaForms();
+				if(response.result){
+					this.register();
+					alert(response.mensagem);
+				}else{
+					alert(response.mensagem);
+				}
+				})
+				.catch((err) => {
+				console.log(err);
+				return;
+			});
+		},
+
 		checkRegister(){
 			if(this.cSenha == this.register_form.password){
-				this.register();
+				this.salvaUsuario();
 				return;
 			}
 
-			alert("Senhas não coincidem")
+			alert("Senhas não coincidem");
 		}
 	}
 }

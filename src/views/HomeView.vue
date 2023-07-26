@@ -121,9 +121,9 @@
 
       return {user}
     },
-    mounted(){
+    async mounted(){
       try {
-        if(this.user.displayName != null){
+        if( await this.user.displayName != null){
           this.nome = this.user.displayName + ' ';
         }
       } catch (error) {
