@@ -5,7 +5,7 @@
     <div class="imgFundo">
       <div class="esquerda">
 
-        <h1>Bem vindo(a) {{ nome }}ao melhor jogo de <br>
+        <h1>Bem vindo(a) <spam v-if="user">{{ user.displayName }}</spam> ao melhor jogo de <br>
         perguntas e respostas sobre Energia <br>
         Sustentável e  Meio Ambiente. Desafie <br>
         seus amigos, teste seus conhecimentos, <br>
@@ -23,12 +23,12 @@
         <div class="direita">
 
         <div class="b1">
-          <button class="botao"><p>Comece A Jogar Agora</p></button>
+          <router-link class="botao" to="/jogo">Comece A Jogar Agora</router-link>
           <p class="info">*É necessário efetuar o login antes de Jogar</p>
         </div>
 
         <div class="b2">
-          <button class="botao"><p>Ranking Da Energia Limpa</p></button>
+          <router-link class="botao" to="/">Ranking Da Energia Limpa</router-link>
         </div>
         </div>
     </div>
@@ -63,11 +63,9 @@
     justify-content: center;
     border: 0;
     border-radius: 1.5vh;
-  }
-
-  button p{
+    text-decoration: none;
     font-size: 2.8vh;
-    margin: 0;
+    cursor: pointer;
   }
 
   .info{
@@ -93,8 +91,7 @@
 <script>
   import NavbarComponent from '@/components/NavbarComponent.vue';
   import FooterComponent from '@/components/FooterComponent.vue';
-  import { useStore} from "vuex";
-  import {computed} from "vue";
+  import { onMounted, ref} from "vue";
   import { auth } from '../firebase';
 
   export default {
@@ -109,25 +106,17 @@
 	  },
     setup() {
 
-      const store = useStore()
+      const user = ref(null);
 
-      auth.onAuthStateChanged(user => {
-        store.dispatch("fetchUser", user);
+      onMounted(() => {
+      auth.onAuthStateChanged(currentUser => {
+        user.value = currentUser;
       });
-
-      const user = computed(() => {
-        return store.getters.user;
       });
 
       return {user}
     },
     async mounted(){
-      try {
-        if( await this.user.displayName != null){
-          this.nome = this.user.displayName + ' ';
-        }
-      } catch (error) {
-      }
       
     }
   }

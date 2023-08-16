@@ -122,14 +122,14 @@ export default {
 		async salvaUsuario(){
 			await setUser(this.register_form.email, this.register_form.nome)
 				.then((response) => {
-				console.log(response);
-				this.limpaForms();
+				//console.log(response);
 				if(response.result){
 					this.register();
-					alert(response.mensagem);
+					//alert(response.mensagem);
 				}else{
 					alert(response.mensagem);
 				}
+				this.limpaForms();
 				})
 				.catch((err) => {
 				console.log(err);

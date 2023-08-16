@@ -2,16 +2,16 @@
     <nav id="navbar">
       <div class="esquerda">
         <router-link class="item" v-bind:class="{ ativo: isAtivo1 }" to="/">Início</router-link>
-        <router-link class="item" v-bind:class="{ ativo: isAtivo2 }" to="/">Jogo</router-link>
+        <router-link class="item" v-bind:class="{ ativo: isAtivo2 }" to="/jogo">Jogo</router-link>
         <router-link class="item" v-bind:class="{ ativo: isAtivo3 }" to="/">Ranking</router-link>
         <router-link class="item" v-bind:class="{ ativo: isAtivo4 }" to="/">Conquistas</router-link>
         <router-link class="item" v-bind:class="{ ativo: isAtivo5 }" to="/sobre">Sobre</router-link>
       </div>
 
       <div class="right">
-        <p class="ola" v-if="isLogado">Olá&nbsp;&nbsp;<span class="ativo">{{ user.displayName }}</span>&nbsp;&nbsp;|&nbsp;&nbsp;</p>
-        <router-link class="item login" v-bind:class="{ ativo: isAtivo6 }" to="/login" v-if="!isLogado">Login</router-link>
-        <a class="item login" @click="$store.dispatch('logout')" v-on:click="logout()" v-if="isLogado">Logout</a>
+        <p class="ola" v-if="user">Olá&nbsp;&nbsp;<span class="ativo">{{ user.displayName }}</span>&nbsp;&nbsp;|&nbsp;&nbsp;</p>
+        <router-link class="item login" v-bind:class="{ ativo: isAtivo6 }" to="/login" v-if="!user">Login</router-link>
+        <a class="item login" @click="$store.dispatch('logout')" v-on:click="logout()" v-else>Logout</a>
       </div>
     </nav>
     <router-view/>
@@ -62,8 +62,7 @@
 </style>
 
 <script>
-  import { useStore} from "vuex";
-  import {computed} from "vue";
+  import {onMounted, ref} from "vue";
   import { auth } from '../firebase';
 
   export default{
@@ -76,8 +75,7 @@
               isAtivo3: false,
               isAtivo4: false,
               isAtivo5: false,
-              isAtivo6: false,
-              isLogado: false
+              isAtivo6: false
           }
       },
       methods:{
@@ -118,43 +116,23 @@
           alert("Você foi deslogado(a).");
           this.mudaLogadoF();
         },
-
-        mudaLogadoT(){
-          this.isLogado = true;
-        },
-
-        mudaLogadoF(){
-          this.isLogado = false;
-        }
+        
       },
       setup() {
 
-        const store = useStore()
+        const user = ref(null);
 
-        auth.onAuthStateChanged(user => {
-          store.dispatch("fetchUser", user);
+        onMounted(() => {
+        auth.onAuthStateChanged(currentUser => {
+          user.value = currentUser;
         });
-
-        const user = computed(() => {
-          return store.getters.user;
         });
 
         return {user}
       },
-      async mounted() {
+      mounted() {
         if (this.ativo != null) {
           this.seleciona();
-        }
-        
-        try {
-          if(await this.user.displayName != null){
-            this.mudaLogadoT();
-            console.log(this.user);
-          }else{
-            this.mudaLogadoF();
-          }
-        }catch(Ex){
-          this.mudaLogadoF();
         }
         
       }
