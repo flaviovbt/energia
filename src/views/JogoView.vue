@@ -78,6 +78,18 @@
                 {{ perguntaText }}
               </h2>
             </div>
+
+            <div class="s5">
+              <h5 class="alternativa correta">A&nbsp;&nbsp;&nbsp;{{opA}}</h5>
+              <div class="linha"></div>
+              <h5 class="alternativa">B&nbsp;&nbsp;&nbsp;{{opB}}</h5>
+              <div class="linha"></div>
+              <h5 class="alternativa">C&nbsp;&nbsp;&nbsp;{{opC}}</h5>
+              <div class="linha"></div>
+              <h5 class="alternativa">D&nbsp;&nbsp;&nbsp;{{opD}}</h5>
+              <div class="linha"></div>
+              <h5 class="alternativa errada">E&nbsp;&nbsp;&nbsp;{{opE}}</h5>
+            </div>
         </div>
       </div>
   
@@ -204,6 +216,38 @@
   .nVerde h4{
     color: white;
   }
+
+  .s5{
+    height: 30vh;
+    width: 40vw;
+    background-color: #DEA05F;
+    border-radius: 1vw;
+    border: 2px solid white;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    overflow: hidden;
+  }
+
+  .alternativa{
+    width: 39vw;
+    font-size: 3vh;
+    padding-left: 1vw;
+    line-height: 5.8vh;
+  }
+
+  .linha{
+    border: 1px solid white;
+    width: 100%;
+  }
+
+  .correta{
+    background-color: #77AD78;
+  }
+
+  .errada{
+    background-color: #ff6961;
+  }
 </style>
 
 <script>
@@ -239,7 +283,12 @@
         isAtivo8: false,
         isAtivo9: false,
         isAtivo10: false,
-        perguntaText: "Selecione as fontes de energia renovável :"
+        perguntaText: "Selecione as fontes de energia renovável :",
+        opA: 'teste',
+        opB: '', 
+        opC: '',
+        opD: '',
+        opE: ''
 		  }
 	  },
     setup() {
