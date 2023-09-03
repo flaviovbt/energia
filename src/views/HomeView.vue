@@ -117,7 +117,6 @@
       return {user}
     },
     async mounted(){
-      
     }
   }
 </script>

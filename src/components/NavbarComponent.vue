@@ -134,7 +134,6 @@
         if (this.ativo != null) {
           this.seleciona();
         }
-        
       }
   }
 </script>
