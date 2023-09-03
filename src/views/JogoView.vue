@@ -41,34 +41,34 @@
             <div class="s2"></div>
 
             <div class="s3">
-              <div class="numero" v-bind:class="{ nVerde: isAtivo1 }">
+              <div class="numero" v-bind:class="{ nVerde: isPerguntaAtual[0] }">
                 <h4>1</h4>
               </div>
-              <div class="numero" v-bind:class="{ nVerde: isAtivo2 }">
+              <div class="numero" v-bind:class="{ nVerde: isPerguntaAtual[1] }">
                 <h4>2</h4>
               </div>
-              <div class="numero" v-bind:class="{ nVerde: isAtivo3 }">
+              <div class="numero" v-bind:class="{ nVerde: isPerguntaAtual[2] }">
                 <h4>3</h4>
               </div>
-              <div class="numero" v-bind:class="{ nVerde: isAtivo4 }">
+              <div class="numero" v-bind:class="{ nVerde: isPerguntaAtual[3] }">
                 <h4>4</h4>
               </div>
-              <div class="numero" v-bind:class="{ nVerde: isAtivo5 }">
+              <div class="numero" v-bind:class="{ nVerde: isPerguntaAtual[4] }">
                 <h4>5</h4>
               </div>
-              <div class="numero" v-bind:class="{ nVerde: isAtivo6 }">
+              <div class="numero" v-bind:class="{ nVerde: isPerguntaAtual[5] }">
                 <h4>6</h4>
               </div>
-              <div class="numero" v-bind:class="{ nVerde: isAtivo7 }">
+              <div class="numero" v-bind:class="{ nVerde: isPerguntaAtual[6] }">
                 <h4>7</h4>
               </div>
-              <div class="numero" v-bind:class="{ nVerde: isAtivo8 }">
+              <div class="numero" v-bind:class="{ nVerde: isPerguntaAtual[7] }">
                 <h4>8</h4>
               </div>
-              <div class="numero" v-bind:class="{ nVerde: isAtivo9 }">
+              <div class="numero" v-bind:class="{ nVerde: isPerguntaAtual[8] }">
                 <h4>9</h4>
               </div>
-              <div class="numero" v-bind:class="{ nVerde: isAtivo10 }">
+              <div class="numero" v-bind:class="{ nVerde: isPerguntaAtual[9] }">
                 <h4>10</h4>
               </div>
             </div>
@@ -80,15 +80,15 @@
             </div>
 
             <div class="s5">
-              <h5 class="alternativa correta">A&nbsp;&nbsp;&nbsp;{{opA}}</h5>
+              <h5 class="alternativa" v-bind:class="{ correta: isC[0], errada : isE[0] }" v-on:click="resposta(0)">A&nbsp;&nbsp;&nbsp;{{op[0]}}</h5>
               <div class="linha"></div>
-              <h5 class="alternativa">B&nbsp;&nbsp;&nbsp;{{opB}}</h5>
+              <h5 class="alternativa" v-bind:class="{ correta: isC[1], errada : isE[1] }" v-on:click="resposta(1)">B&nbsp;&nbsp;&nbsp;{{op[1]}}</h5>
               <div class="linha"></div>
-              <h5 class="alternativa">C&nbsp;&nbsp;&nbsp;{{opC}}</h5>
+              <h5 class="alternativa" v-bind:class="{ correta: isC[2], errada : isE[2] }" v-on:click="resposta(2)">C&nbsp;&nbsp;&nbsp;{{op[2]}}</h5>
               <div class="linha"></div>
-              <h5 class="alternativa">D&nbsp;&nbsp;&nbsp;{{opD}}</h5>
+              <h5 class="alternativa" v-bind:class="{ correta: isC[3], errada : isE[3] }" v-on:click="resposta(3)">D&nbsp;&nbsp;&nbsp;{{op[3]}}</h5>
               <div class="linha"></div>
-              <h5 class="alternativa errada">E&nbsp;&nbsp;&nbsp;{{opE}}</h5>
+              <h5 class="alternativa" v-bind:class="{ correta: isC[4], errada : isE[4] }" v-on:click="resposta(4)">E&nbsp;&nbsp;&nbsp;{{op[4]}}</h5>
             </div>
         </div>
       </div>
@@ -219,7 +219,7 @@
 
   .s5{
     height: 30vh;
-    width: 40vw;
+    width: 45vw;
     background-color: #DEA05F;
     border-radius: 1vw;
     border: 2px solid white;
@@ -227,6 +227,27 @@
     flex-direction: column;
     justify-content: space-around;
     overflow: hidden;
+  }
+
+  .s4{
+    width: 45vw;
+  }
+
+  .s4 h2{
+    font-size: 4vh;
+    line-height: 4vh;
+    letter-spacing: 0.15vw;
+  }
+
+  .s5 h5{
+    width: 100%;
+    height: 100%;
+    font-size: 3vh;
+    line-height: 3vh;
+    letter-spacing: 0.15vw;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
   }
 
   .alternativa{
@@ -256,6 +277,7 @@
   import { useStore} from "vuex";
   import {computed, ref} from "vue";
   import { auth } from '../firebase';
+  import { getPerguntasRandom } from '@/service/JogoView.service.js';
 
   export default {
     components: {
@@ -272,23 +294,16 @@
         ]),
         isJogo: false,
         dificuldade: "Fácil",
+        pontuacao: 0,
         tempo: 0,
-        isAtivo1: true,
-        isAtivo2: false,
-        isAtivo3: false,
-        isAtivo4: false,
-        isAtivo5: false,
-        isAtivo6: false,
-        isAtivo7: false,
-        isAtivo8: false,
-        isAtivo9: false,
-        isAtivo10: false,
+        numPergunta: -1,
+        isPerguntaAtual: [],
         perguntaText: "Selecione as fontes de energia renovável :",
-        opA: 'teste',
-        opB: '', 
-        opC: '',
-        opD: '',
-        opE: ''
+        op: [],
+        isC: [],
+        isE: [],
+        perguntas: [],
+        perguntaAtual: {}
 		  }
 	  },
     setup() {
@@ -306,10 +321,73 @@
       return {user}
     },
     methods:{
-      mostrarJogo(){
+      async startJogo(){
+        this.numPergunta = 0;
+        this.isPerguntaAtual[this.numPergunta] = true;
+
+        //destacaNumPergunta();
+
+        this.perguntaAtual = await this.perguntas[this.numPergunta];
+        this.perguntaText = await this.perguntaAtual.texto;
+        this.op = this.perguntaAtual.alternativas;
+
         this.isJogo = true;
+      },
+
+      async mostrarJogo(){
         this.dificuldade = this.selected;
+
+        this.perguntas = await getPerguntasRandom();
+
+        this.startJogo();
+      },
+
+      indiceRespostaCerta(){
+        if(this.perguntaAtual.resposta == this.op[0])
+          return 0;
+        else if(this.perguntaAtual.resposta == this.op[1])
+          return 1;
+        else if(this.perguntaAtual.resposta == this.op[2])
+          return 2;
+        else if(this.perguntaAtual.resposta == this.op[3])
+          return 3;
+        else if(this.perguntaAtual.resposta == this.op[4])
+          return 4;
+      },
+
+      mudaAlternativa(alternativa){
+        this.isPerguntaAtual[this.numPergunta] = false;
+        this.numPergunta++;
+        this.isPerguntaAtual[this.numPergunta] = true;
+
+        this.perguntaAtual = this.perguntas[this.numPergunta];
+        this.perguntaText = this.perguntaAtual.texto;
+        this.op = this.perguntaAtual.alternativas;
+      },
+
+      async resposta(alternativa){
+        if(this.perguntaAtual.resposta == this.op[alternativa]){
+          this.isC[alternativa] = true;
+          this.pontuacao += 100;
+        }else{
+          this.isE[alternativa] = true;
+          this.isC[this.indiceRespostaCerta()] = true;
+        }
+
+        if(this.numPergunta == 9){
+          alert("pontuação: " + this.pontuacao);
+          this.isJogo = false;
+          return;
+        }
+
+        setTimeout(function() {
+          this.isC[this.indiceRespostaCerta()] = false;
+          this.isE[alternativa] = false;
+          this.mudaAlternativa(alternativa);
+        }.bind(this), 1500);
+ 
       }
+      
     },
     mounted(){
       

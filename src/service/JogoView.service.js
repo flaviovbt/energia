@@ -1,14 +1,10 @@
-export const setUser = async (email, nome) => {
+export const getPerguntasRandom = async () => {
 
     var axios = require('axios');
 
     var config = {
-        method: 'post',
-        url: 'http://localhost:3000/user/create',
-        params: {
-        email: email,
-        nome: nome
-        }
+        method: 'get',
+        url: 'http://localhost:3000/pergunta/getRandom'
     };
 
     return await axios(config)
