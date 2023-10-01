@@ -33,7 +33,7 @@
               Tempo
             </h3>
             <h3 class="verde">
-              {{zfill(sec)}}&nbsp;&nbsp;s
+              {{ zfill(sec) }}&nbsp;&nbsp;s
             </h3>
           </div>
         </div>
@@ -105,15 +105,6 @@
 <style scoped>
 * {
   color: white;
-}
-
-.fundoDark {
-  display: flex;
-  justify-content: space-evenly;
-  align-items: center;
-  height: 86vh;
-
-  background-color: #504B43;
 }
 
 .boxMarromSelecao {
@@ -283,6 +274,7 @@ import { useStore } from "vuex";
 import { computed, ref } from "vue";
 import { auth } from '../firebase';
 import { getPerguntasRandom, createPartida } from '@/service/JogoView.service.js';
+import { getUser, updateUser } from '@/service/User.service.js';
 
 export default {
   components: {
@@ -402,9 +394,9 @@ export default {
       }
     },
 
-    calculaPontuacao(){
+    calculaPontuacao() {
       let multiplicador = 1;
-      switch(this.dificuldade){
+      switch (this.dificuldade) {
         case 'Fácil':
           multiplicador = 1;
           break;
@@ -419,9 +411,9 @@ export default {
       this.pontuacao = (this.pontuacao * multiplicador) / (this.sec * 0.5);
     },
 
-    async enviaInfosPartida(){
+    async enviaInfosPartida() {
       let partida = {};
-      partida.acertos = this.pontuacao/100;
+      partida.acertos = this.pontuacao / 100;
 
       this.calculaPontuacao();
       partida.pontuacao = this.pontuacao;
@@ -429,37 +421,36 @@ export default {
 
       partida.dificuldade = this.dificuldade;
       partida.tempo = this.sec;
-      partida.user = this.user.email;
 
-      await createPartida(partida);
+      await createPartida(partida, this.user.email, this.user.nome);
     },
 
-    zfill(number){
-      return number.toString().padStart(2,0)
+    zfill(number) {
+      return number.toString().padStart(2, 0)
     },
-    play(){
-      
-      if(this.timer === null){
+    play() {
+
+      if (this.timer === null) {
         this.playing()
-        this.timer = setInterval(()=> this.playing(), 1000)
+        this.timer = setInterval(() => this.playing(), 1000)
       }
-      else{
+      else {
         clearInterval(this.timer);
         this.timer = null;
         this.pause();
       }
     },
 
-    playing(){
+    playing() {
       this.sec++;
     },
 
-    pause(){
+    pause() {
       this.intervalList.push(`${this.zfill(this.sec)}`);
     },
 
-    clear(){
-      if(this.timer !== null){
+    clear() {
+      if (this.timer !== null) {
         clearInterval(this.timer)
         this.timer = null
       }
@@ -467,7 +458,7 @@ export default {
       this.clearIntervalList();
     },
 
-    clearIntervalList(){
+    clearIntervalList() {
       this.intervalList = []
     }
 

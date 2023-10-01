@@ -86,6 +86,15 @@
     flex-direction: column;
     align-items: center;
   }
+
+  .fundoDark {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    height: 86vh;
+  
+    background-color: #504B43;
+  }
 </style>
 
 <script>

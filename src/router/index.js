@@ -2,6 +2,8 @@ import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import LoginView from '../views/LoginView.vue'
 import JogoView from '../views/JogoView.vue'
+import RankingView from '@/views/RankingView.vue'
+import ConquistasView from '@/views/ConquistasView.vue'
 import SobreView from '../views/SobreView.vue'
 import { auth } from '../firebase'
 
@@ -18,6 +20,22 @@ const routes = [
     path: '/jogo',
     name: 'Jogo',
     component: JogoView,
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
+    path: '/ranking',
+    name: 'Ranking',
+    component: RankingView,
+    meta: {
+      requiresAuth: false
+    }
+  },
+  {
+    path: '/conquistas',
+    name: 'conquistas',
+    component: ConquistasView,
     meta: {
       requiresAuth: true
     }

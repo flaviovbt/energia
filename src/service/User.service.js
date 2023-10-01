@@ -1,10 +1,13 @@
-export const getPerguntasRandom = async () => {
+export const getUser = async (userEmail) => {
 
     var axios = require('axios');
 
     var config = {
-        method: 'get',
-        url: 'http://localhost:3000/pergunta/getRandom'
+        method: 'post',
+        url: 'http://localhost:3000/user/get',
+        params: {
+            email: userEmail
+        }
     };
 
     return await axios(config)
@@ -17,23 +20,22 @@ export const getPerguntasRandom = async () => {
         });
 };
 
-export const createPartida = async (infos, userEmail, userNome) => {
+export const updateUser = async (userEmail, user) => {
 
     var axios = require('axios');
 
     var config = {
         method: 'post',
-        url: 'http://localhost:3000/partida/create',
+        url: 'http://localhost:3000/user/update',
         params: {
-            email: userEmail,
-            nome: userNome
+            email: userEmail
         },
-        data: infos
+        data: user
     };
 
     return await axios(config)
         .then(function (response) {
-        //console.log(response.data);
+        console.log(response.data);
         return response.data;
         })
         .catch(function (error) {

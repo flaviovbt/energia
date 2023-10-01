@@ -3,8 +3,8 @@
       <div class="esquerda">
         <router-link class="item" v-bind:class="{ ativo: isAtivo1 }" to="/">Início</router-link>
         <router-link class="item" v-bind:class="{ ativo: isAtivo2 }" to="/jogo">Jogo</router-link>
-        <router-link class="item" v-bind:class="{ ativo: isAtivo3 }" to="/">Ranking</router-link>
-        <router-link class="item" v-bind:class="{ ativo: isAtivo4 }" to="/">Conquistas</router-link>
+        <router-link class="item" v-bind:class="{ ativo: isAtivo3 }" to="/ranking">Ranking</router-link>
+        <router-link class="item" v-bind:class="{ ativo: isAtivo4 }" to="/conquistas">Conquistas</router-link>
         <router-link class="item" v-bind:class="{ ativo: isAtivo5 }" to="/sobre">Sobre</router-link>
       </div>
 
@@ -114,7 +114,6 @@
 
         logout(){
           alert("Você foi deslogado(a).");
-          this.mudaLogadoF();
         },
         
       },
