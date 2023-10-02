@@ -274,7 +274,6 @@ import { useStore } from "vuex";
 import { computed, ref } from "vue";
 import { auth } from '../firebase';
 import { getPerguntasRandom, createPartida } from '@/service/JogoView.service.js';
-import { getUser, updateUser } from '@/service/User.service.js';
 
 export default {
   components: {
