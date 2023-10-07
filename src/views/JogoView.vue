@@ -80,19 +80,19 @@
         </div>
 
         <div class="s5">
-          <h5 class="alternativa" v-bind:class="{ correta: isC[0], errada: isE[0] }" v-on:click="resposta(0)">
+          <h5 class="alternativa" v-bind:class="{ correta: isC[0], errada: isE[0] }" v-on:click="resposta(0)" :disabled="disableClicks">
             A&nbsp;&nbsp;&nbsp;{{ op[0] }}</h5>
           <div class="linha"></div>
-          <h5 class="alternativa" v-bind:class="{ correta: isC[1], errada: isE[1] }" v-on:click="resposta(1)">
+          <h5 class="alternativa" v-bind:class="{ correta: isC[1], errada: isE[1] }" v-on:click="resposta(1)" :disabled="disableClicks">
             B&nbsp;&nbsp;&nbsp;{{ op[1] }}</h5>
           <div class="linha"></div>
-          <h5 class="alternativa" v-bind:class="{ correta: isC[2], errada: isE[2] }" v-on:click="resposta(2)">
+          <h5 class="alternativa" v-bind:class="{ correta: isC[2], errada: isE[2] }" v-on:click="resposta(2)" :disabled="disableClicks">
             C&nbsp;&nbsp;&nbsp;{{ op[2] }}</h5>
           <div class="linha"></div>
-          <h5 class="alternativa" v-bind:class="{ correta: isC[3], errada: isE[3] }" v-on:click="resposta(3)">
+          <h5 class="alternativa" v-bind:class="{ correta: isC[3], errada: isE[3] }" v-on:click="resposta(3)" :disabled="disableClicks">
             D&nbsp;&nbsp;&nbsp;{{ op[3] }}</h5>
           <div class="linha"></div>
-          <h5 class="alternativa" v-bind:class="{ correta: isC[4], errada: isE[4] }" v-on:click="resposta(4)">
+          <h5 class="alternativa" v-bind:class="{ correta: isC[4], errada: isE[4] }" v-on:click="resposta(4)" :disabled="disableClicks">
             E&nbsp;&nbsp;&nbsp;{{ op[4] }}</h5>
         </div>
       </div>
@@ -302,7 +302,8 @@ export default {
       perguntaAtual: {},
       sec: 0,
       timer: null,
-      intervalList: []
+      intervalList: [],
+      disableClicks: false
     }
   },
   setup() {
@@ -362,6 +363,12 @@ export default {
     },
 
     async resposta(alternativa) {
+      if (this.disableClicks) {
+        return;
+      }
+
+      this.disableClicks = true;
+
       if (this.perguntaAtual.resposta == this.op[alternativa]) {
         this.isC[alternativa] = true;
         this.pontuacao += 100;
@@ -389,6 +396,7 @@ export default {
           this.isE[alternativa] = false;
           this.play();
           this.mudaAlternativa();
+          this.disableClicks = false;
         }.bind(this), 1500);
       }
     },

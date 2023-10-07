@@ -28,7 +28,7 @@
         </div>
 
         <div class="b2">
-          <router-link class="botao" to="/">Ranking Da Energia Limpa</router-link>
+          <router-link class="botao" to="/ranking">Ranking Da Energia Limpa</router-link>
         </div>
         </div>
     </div>
@@ -91,7 +91,7 @@
     display: flex;
     justify-content: space-evenly;
     align-items: center;
-    height: 86vh;
+    min-height: 86vh;
   
     background-color: #504B43;
   }

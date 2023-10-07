@@ -3,9 +3,9 @@ import HomeView from '../views/HomeView.vue'
 import LoginView from '../views/LoginView.vue'
 import JogoView from '../views/JogoView.vue'
 import RankingView from '@/views/RankingView.vue'
-import ConquistasView from '@/views/ConquistasView.vue'
 import SobreView from '../views/SobreView.vue'
 import { auth } from '../firebase'
+import InserirPerguntasView from '@/views/InserirPerguntasView.vue'
 
 const routes = [
   {
@@ -33,9 +33,9 @@ const routes = [
     }
   },
   {
-    path: '/conquistas',
-    name: 'conquistas',
-    component: ConquistasView,
+    path: '/inserirperguntas',
+    name: 'inserirperguntas',
+    component: InserirPerguntasView,
     meta: {
       requiresAuth: true
     }
@@ -61,13 +61,18 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  if (to.path === '/login' && auth.currentUser) {
+  if ((to.path === '/login' ) && auth.currentUser) {
     next('/')
     return;
   }
 
   if (to.matched.some(record => record.meta.requiresAuth) && !auth.currentUser) {
     next('/login')
+    return;
+  }
+
+  if((from.path === '/login' ) && auth.currentUser){
+    next('/')
     return;
   }
 

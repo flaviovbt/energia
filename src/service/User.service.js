@@ -35,7 +35,7 @@ export const updateUser = async (userEmail, user) => {
 
     return await axios(config)
         .then(function (response) {
-        console.log(response.data);
+        //console.log(response.data);
         return response.data;
         })
         .catch(function (error) {

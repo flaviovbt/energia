@@ -85,16 +85,19 @@ export default {
 
 .fundoDark {
     flex-direction: column;
+    height: 100%;
 }
 
 h1 {
     text-align: center;
     max-width: 60vw;
+    margin-top: 5vh 0;
 }
 
 #ranking {
     background-color: #A76F4B;
     border-radius: 1vw;
+    margin: 5vh 0;
 }
 
 table {

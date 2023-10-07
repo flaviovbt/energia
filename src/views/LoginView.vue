@@ -7,7 +7,7 @@
 				<form class="register" @submit.prevent="checkRegister" >
 					<h2 class="title">Cadastrar</h2>
 					<input 
-						type="nome" 
+						type="text" 
 						placeholder="Nome"
 						required='true'
 						v-model="register_form.nome" />
