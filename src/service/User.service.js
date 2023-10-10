@@ -1,3 +1,5 @@
+import { TOKEN } from '@/config/configs.js';
+
 export const getUser = async (userEmail) => {
 
     var axios = require('axios');
@@ -6,7 +8,8 @@ export const getUser = async (userEmail) => {
         method: 'post',
         url: 'http://localhost:3000/user/get',
         params: {
-            email: userEmail
+            email: userEmail,
+            token: TOKEN
         }
     };
 
@@ -28,7 +31,8 @@ export const updateUser = async (userEmail, user) => {
         method: 'post',
         url: 'http://localhost:3000/user/update',
         params: {
-            email: userEmail
+            email: userEmail,
+            token: TOKEN
         },
         data: user
     };

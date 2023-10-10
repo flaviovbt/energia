@@ -1,87 +1,63 @@
 <template>
 	<main class="login">
-		<NavbarComponent ativo='6'/>
+		<NavbarComponent ativo='6' />
 
-		<section class="imgFundo" >
+		<section class="imgFundo">
 			<div class="boxMarrom" v-if="isCadastro">
-				<form class="register" @submit.prevent="checkRegister" >
+				<form class="register" @submit.prevent="checkRegister">
 					<h2 class="title">Cadastrar</h2>
-					<input 
-						type="text" 
-						placeholder="Nome"
-						required='true'
-						v-model="register_form.nome" />
-					<input 
-						type="email" 
-						placeholder="Email"
-						required="true"
-						v-model="register_form.email" />
-					<input 
-						type="password" 
-						placeholder="Senha" 
-						required="true"
-						v-model="register_form.password" />
-					<input 
-						type="password" 
-						required="true"
-						placeholder="Confirme sua senha" 
-						v-model="cSenha" />
-					<input 
-						type="submit" 
-						value="Crie sua conta" />
+					<input type="text" placeholder="Nome" required='true' v-model="register_form.nome" />
+					<input type="email" placeholder="Email" required="true" v-model="register_form.email" />
+					<input type="password" placeholder="Senha" required="true" v-model="register_form.password" />
+					<input type="password" required="true" placeholder="Confirme sua senha" v-model="cSenha" />
+					<input type="submit" value="Crie sua conta" />
 				</form>
 				<div class="flex">
-					<p>Já possui uma conta ? </p><p v-on:click="telaLogin()" class="verde"> Faça login aqui</p>
+					<p>Já possui uma conta ? </p>
+					<p v-on:click="telaLogin()" class="verde"> Faça login aqui</p>
 				</div>
 			</div>
 
 			<div class="boxMarrom" v-if="isLogin">
-				<form class="login" @submit.prevent="login" >
+				<form class="login" @submit.prevent="login">
 					<h2 class="title">Entrar</h2>
-					<input 
-						type="email" 
-						placeholder="Email"
-						required="true"
-						v-model="login_form.email" />
-					<input 
-						type="password" 
-						placeholder="Senha" 
-						required="true"
-						v-model="login_form.password" />
-					<input 
-						type="submit" 
-						value="Log in" />
+					<input type="email" placeholder="Email" required="true" v-model="login_form.email" />
+					<input type="password" placeholder="Senha" required="true" v-model="login_form.password" />
+					<input type="submit" value="Log in" />
 				</form>
 				<div class="flex">
-					<p>Não possui uma conta ? </p><p v-on:click="telaCadastro()" class="verde"> Crie sua conta agora</p>
+					<p>Não possui uma conta ? </p>
+					<p v-on:click="telaCadastro()" class="verde"> Crie sua conta agora</p>
 				</div>
 			</div>
 		</section>
 
-		<FooterComponent/>
+		<FooterComponent />
 	</main>
 </template>
 
 <script>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useStore } from 'vuex'
 import NavbarComponent from '@/components/NavbarComponent.vue';
 import FooterComponent from '@/components/FooterComponent.vue';
 import { setUser } from '@/service/LoginView.service.js';
- 
+import router from '@/router/index.js';
+import { auth } from '../firebase';
+
 export default {
 	components: {
-      NavbarComponent,
-      FooterComponent
-    },
-	data ( ){
-		return{
+		NavbarComponent,
+		FooterComponent
+	},
+	data() {
+		return {
 			isLogin: true,
-			isCadastro: false, 
+			isCadastro: false,
 			cSenha: null
 		}
 	},
-	setup () {
+	setup() {
 		const login_form = ref({});
 		const register_form = ref({});
 		const store = useStore();
@@ -94,51 +70,65 @@ export default {
 			store.dispatch('register', register_form.value);
 		}
 
+		const user = ref(null);
+
+		onMounted(() => {
+			auth.onAuthStateChanged(currentUser => {
+				user.value = currentUser;
+				if (user.value) {
+					router.push({
+						name: 'Home'
+					});
+				}
+			});
+		});
+
 		return {
 			login_form,
 			register_form,
 			login,
-			register
+			register,
+			user
 		}
 	},
-	methods:{
-		telaCadastro(){
-			this.isCadastro=true;
-			this.isLogin=false;
+	methods: {
+		telaCadastro() {
+			this.isCadastro = true;
+			this.isLogin = false;
 		},
 
-		telaLogin(){
-			this.isLogin=true;
-			this.isCadastro=false;
+		telaLogin() {
+			this.isLogin = true;
+			this.isCadastro = false;
 		},
 
-		limpaForms(){
+		limpaForms() {
 			this.register_form.email = '';
 			this.register_form.nome = '';
 			this.register_form.password = '';
 			this.cSenha = '';
 		},
 
-		async salvaUsuario(){
+		async salvaUsuario() {
 			await setUser(this.register_form.email, this.register_form.nome)
 				.then((response) => {
-				//console.log(response);
-				if(response.result){
-					this.register();
-					//alert(response.mensagem);
-				}else{
-					alert(response.mensagem);
-				}
-				this.limpaForms();
+					//console.log(response);
+					if (response.result) {
+						this.register();
+						//alert(response.mensagem);
+					} else {
+						alert(response.mensagem);
+					}
+					this.limpaForms();
 				})
 				.catch((err) => {
-				console.log(err);
-				return;
-			});
+					console.log(err);
+					return;
+				});
 		},
 
-		checkRegister(){
-			if(this.cSenha == this.register_form.password){
+		checkRegister() {
+			if (this.cSenha == this.register_form.password) {
 				this.salvaUsuario();
 				return;
 			}
@@ -150,8 +140,7 @@ export default {
 </script>
 
 <style scoped>
-
-.boxMarrom{
+.boxMarrom {
 	background-color: #A76F4B;
 	display: flex;
 	flex-direction: column;
@@ -163,12 +152,12 @@ export default {
 	color: white;
 }
 
-.title{
+.title {
 	text-align: center;
 	margin: 4vh 0;
 }
 
-.flex{
+.flex {
 	display: flex;
 }
 
@@ -176,7 +165,7 @@ export default {
 	margin-right: 0.2vw;
 }
 
-.verde{
+.verde {
 	color: #8FD694;
 	cursor: pointer;
 }
@@ -200,14 +189,14 @@ input {
 }
 
 input:-webkit-autofill,
-input:-webkit-autofill:hover, 
-input:-webkit-autofill:focus, 
-input:-webkit-autofill:active{
-    -webkit-box-shadow: 0 0 0 30px #DEA05F inset !important;
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+	-webkit-box-shadow: 0 0 0 30px #DEA05F inset !important;
 }
 
-input:-webkit-autofill{
-    -webkit-text-fill-color: white !important;
+input:-webkit-autofill {
+	-webkit-text-fill-color: white !important;
 }
 
 input::placeholder {

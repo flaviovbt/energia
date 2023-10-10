@@ -70,12 +70,7 @@ router.beforeEach((to, from, next) => {
     next('/login')
     return;
   }
-
-  if((from.path === '/login' ) && auth.currentUser){
-    next('/')
-    return;
-  }
-
+  
   next();
 })
 

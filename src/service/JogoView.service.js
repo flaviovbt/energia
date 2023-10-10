@@ -1,10 +1,15 @@
+import { TOKEN } from '@/config/configs.js';
+
 export const getPerguntasRandom = async () => {
 
     var axios = require('axios');
 
     var config = {
         method: 'get',
-        url: 'http://localhost:3000/pergunta/getRandom'
+        url: 'http://localhost:3000/pergunta/getRandom',
+        params: {
+            token: TOKEN
+        },
     };
 
     return await axios(config)
@@ -17,7 +22,7 @@ export const getPerguntasRandom = async () => {
         });
 };
 
-export const createPartida = async (infos, userEmail, userNome) => {
+export const createPartida = async (infos, userEmail) => {
 
     var axios = require('axios');
 
@@ -26,7 +31,7 @@ export const createPartida = async (infos, userEmail, userNome) => {
         url: 'http://localhost:3000/partida/create',
         params: {
             email: userEmail,
-            nome: userNome
+            token: TOKEN
         },
         data: infos
     };

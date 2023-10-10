@@ -1,3 +1,5 @@
+import { TOKEN } from '@/config/configs.js';
+
 export const setUser = async (email, nome) => {
 
     var axios = require('axios');
@@ -7,7 +9,8 @@ export const setUser = async (email, nome) => {
         url: 'http://localhost:3000/user/create',
         params: {
         email: email,
-        nome: nome
+        nome: nome,
+        token: TOKEN
         }
     };
 

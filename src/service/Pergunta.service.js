@@ -1,3 +1,5 @@
+import { TOKEN } from '@/config/configs.js';
+
 export const createPergunta = async (pergunta) => {
 
     var axios = require('axios');
@@ -8,7 +10,10 @@ export const createPergunta = async (pergunta) => {
     var config = {
         method: 'post',
         url: 'http://localhost:3000/pergunta/create',
-        data: perguntaList
+        data: perguntaList,
+        params: {
+            token: TOKEN
+        },
     };
 
     return await axios(config)
