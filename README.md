@@ -1,5 +1,11 @@
 # energia
 
+## Requirements
+- npm instaled (https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
+- npm install -g npm
+- vue/cli installed
+- npm install -g @vue/cli
+
 ## Project setup
 ```
 npm install
