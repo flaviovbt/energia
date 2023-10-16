@@ -1,6 +1,6 @@
 import { TOKEN } from '@/config/configs.js';
 
-export const getPerguntasRandom = async () => {
+export const getPerguntasRandom = async (difi) => {
 
     var axios = require('axios');
 
@@ -8,7 +8,8 @@ export const getPerguntasRandom = async () => {
         method: 'get',
         url: 'http://localhost:3000/pergunta/getRandom',
         params: {
-            token: TOKEN
+            token: TOKEN,
+            dificuldade: difi
         },
     };
 

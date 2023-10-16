@@ -119,7 +119,7 @@
 }
 
 .boxJogo {
-  height: 70vh;
+  height: 75vh;
   width: 50vw;
   background-color: #A76F4B;
   border-radius: 2vw;
@@ -214,7 +214,7 @@ select {
 }
 
 .s5 {
-  height: 30vh;
+  height: 35vh;
   width: 45vw;
   background-color: #DEA05F;
   border-radius: 1vw;
@@ -236,11 +236,12 @@ select {
 }
 
 .s5 h5 {
-  width: 100%;
+  width: 94%;
   height: 100%;
-  font-size: 3vh;
+  font-size: 2.7vh;
+  font-weight: 300;
   line-height: 3vh;
-  letter-spacing: 0.15vw;
+  letter-spacing: 0.025vw;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -248,8 +249,8 @@ select {
 
 .alternativa {
   width: 39vw;
-  font-size: 3vh;
-  padding-left: 1vw;
+  padding-left: 3%;
+  padding-right: 3%;
   line-height: 5.8vh;
 }
 
@@ -285,7 +286,6 @@ export default {
       selected: ref('Fácil'),
       options: ref([
         { text: 'Fácil', value: 'Fácil' },
-        { text: 'Médio', value: 'Médio' },
         { text: 'Difícil', value: 'Difícil' }
       ]),
       isJogo: false,
@@ -324,6 +324,7 @@ export default {
     async startJogo() {
       this.numPergunta = 0;
       this.isPerguntaAtual[this.numPergunta] = true;
+      this.disableClicks = false;
 
       this.perguntaAtual = await this.perguntas[this.numPergunta];
       this.perguntaText = await this.perguntaAtual.texto;
@@ -334,7 +335,7 @@ export default {
 
     async mostrarJogo() {
       this.dificuldade = this.selected;
-      this.perguntas = await getPerguntasRandom();
+      this.perguntas = await getPerguntasRandom(this.dificuldade);
       this.startJogo();
       this.play();
     },
@@ -406,9 +407,6 @@ export default {
       switch (this.dificuldade) {
         case 'Fácil':
           multiplicador = 1;
-          break;
-        case 'Médio':
-          multiplicador = 1.5;
           break;
         case 'Difícil':
           multiplicador = 2;
