@@ -17,8 +17,6 @@
                     <h4>Dificuldade</h4>
                     <input type="radio" id="facil" value="Fácil" v-model="pergunta.dificuldade" />
                     <label for="facil">Fácil</label>
-                    <input type="radio" id="media" value="Média" v-model="pergunta.dificuldade" />
-                    <label for="media">Média</label>
                     <input type="radio" id="dificil" value="Difícil" v-model="pergunta.dificuldade" />
                     <label for="dificil">Difícil</label>
                     <input class="text" type="submit" value="Criar" />
